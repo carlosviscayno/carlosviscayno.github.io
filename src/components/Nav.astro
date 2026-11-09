@@ -1,0 +1,63 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+const links = [
+  { id: 'home', label: 'Home', icon: 'home' },
+  { id: 'about', label: 'About', icon: 'user' },
+  { id: 'projects', label: 'Projects', icon: 'grid' },
+  { id: 'contact', label: 'Contact', icon: 'mail' },
+];
+---
+<header class="sticky top-0 z-30 border-b border-hairline-soft bg-canvas/85 backdrop-blur">
+  <div class="mx-auto flex h-16 max-w-[1280px] items-center justify-between gap-4 px-5 sm:px-8">
+    <button data-go="home" class="flex items-center gap-3 cursor-pointer" aria-label="Go to home">
+      <span class="grid size-9 place-items-center rounded-lg bg-brand-yellow text-sm font-semibold text-pastel-ink">{site.monogram}</span>
+      <span class="hidden text-[15px] font-medium sm:inline">{site.shortName}</span>
+    </button>
+
+    <nav class="no-scrollbar hidden items-center gap-1 lg:flex" aria-label="Album pages">
+      {links.map((l) => (
+        <button class="nav-link inline-flex items-center gap-1.5" data-nav={l.id} data-go={l.id}><Icon name={l.icon} size={15} />{l.label}</button>
+      ))}
+    </nav>
+
+    <div class="flex items-center gap-3">
+      {/* Background music: idle (note) -> playing (bouncing bars) -> muted (struck-through note). Wired up in scripts/audio.ts */}
+      <button id="sound-btn" class="btn-icon sound-btn" type="button" aria-pressed="false" aria-label="Play background music" title="Play calming music">
+        <Icon name="music" size={17} class="sound-note" />
+        <span class="sound-eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+      </button>
+      <button id="theme-toggle" class="switch" role="switch" aria-checked="false" aria-label="Dark mode"></button>
+      <button id="menu-btn" class="btn-icon lg:hidden" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" class="is-filtered-out border-t border-hairline-soft bg-canvas px-5 py-4 lg:hidden">
+    <div class="flex flex-wrap gap-2">
+      {links.map((l) => (
+        <button class="nav-link inline-flex items-center gap-1.5 !border-hairline" data-nav={l.id} data-go={l.id}><Icon name={l.icon} size={15} />{l.label}</button>
+      ))}
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  .sound-btn { position: relative; }
+  .sound-btn .sound-eq { display: none; align-items: flex-end; justify-content: center; gap: 2px; height: 15px; }
+  .sound-btn .sound-eq i { display: block; width: 3px; height: 100%; border-radius: 2px; background: currentColor; transform-origin: 50% 100%; transform: scaleY(.3); }
+  .sound-btn.is-playing .sound-note { display: none; }
+  .sound-btn.is-playing .sound-eq { display: flex; }
+  .sound-btn.is-playing .sound-eq i { animation: sound-bar .9s ease-in-out infinite alternate; }
+  .sound-btn.is-playing .sound-eq i:nth-child(2) { animation-duration: .65s; animation-delay: -.3s; }
+  .sound-btn.is-playing .sound-eq i:nth-child(3) { animation-duration: 1.1s; animation-delay: -.6s; }
+  .sound-btn.is-playing .sound-eq i:nth-child(4) { animation-duration: .75s; animation-delay: -.15s; }
+  @keyframes sound-bar { to { transform: scaleY(1); } }
+  /* muted: a diagonal strike through the note */
+  .sound-btn.is-muted::after { content: ''; position: absolute; left: 50%; top: 50%; width: 22px; height: 2px; border-radius: 2px; background: currentColor; transform: translate(-50%, -50%) rotate(-45deg); }
+  .sound-btn.is-muted .sound-note { opacity: .55; }
+  @media (prefers-reduced-motion: reduce) {
+    .sound-btn.is-playing .sound-eq i { animation: none; transform: scaleY(.7); }
+  }
+</style>

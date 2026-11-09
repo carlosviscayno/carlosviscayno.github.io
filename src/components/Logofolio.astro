@@ -1,0 +1,31 @@
+---
+import { logofolio } from '../data/site';
+---
+<section data-page="logofolio" class="mx-auto max-w-[1280px] px-5 py-12 sm:px-8 lg:py-16">
+  <nav aria-label="Breadcrumb" class="reveal mb-6 flex items-center gap-2 text-sm text-ink-muted" style="--i:0">
+    <button data-go="projects" class="cursor-pointer font-medium text-ink-soft underline-offset-4 hover:underline">Projects</button>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">Logofolio</span>
+  </nav>
+  <p class="eyebrow reveal" style="--i:0">01 · Logofolio</p>
+  <h2 class="reveal mt-3 text-5xl font-medium tracking-[-0.03em] sm:text-7xl" style="--i:1">Logofolio</h2>
+  <p class="reveal mt-3 max-w-2xl text-ink-soft" style="--i:2">{logofolio.tags}</p>
+
+  <div class="reveal mt-8 flex max-w-sm items-center gap-4 rounded-full border border-hairline bg-surface px-5 py-3" style="--i:3">
+    <label for="logo-size" class="shrink-0 text-sm font-medium">Grid size</label>
+    <input id="logo-size" type="range" min="2" max="5" step="1" value="3" aria-label="Logos per row" />
+  </div>
+
+  <div id="logo-grid" class="mt-8 grid gap-4" style="grid-template-columns: repeat(3, minmax(0, 1fr));">
+    {logofolio.images.map((src, i) => (
+      <button
+        class="tile reveal group aspect-square cursor-pointer overflow-hidden rounded-card border border-hairline-soft bg-surface"
+        style={`--i:${i + 4}`}
+        data-lightbox="logos" data-src={src} data-caption={`Logo ${i + 1}`}
+        aria-label={`Open logo ${i + 1}`}
+      >
+        <img src={src} alt={`Logo ${i + 1}`} class="size-full object-contain p-6" loading="lazy" />
+      </button>
+    ))}
+  </div>
+</section>

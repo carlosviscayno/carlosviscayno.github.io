@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+/* Dark mode is switched by adding class="dark" on <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Design tokens (from DESIGN-miro.md) ───────────────────── */
+:root {
+  --c-canvas: #ffffff;
+  --c-surface: #f7f8fa;
+  --c-ink: #1c1c1e;
+  --c-ink-soft: #555a6a;
+  --c-ink-muted: #8e91a0;
+  --c-hairline: #e0e2e8;
+  --c-hairline-soft: #eef0f3;
+  --c-hairline-strong: #c7cad5;
+  --c-btn: #1c1c1e;
+  --c-btn-text: #ffffff;
+  --c-active: #1c1c1e;
+  --c-active-text: #ffffff;
+  --c-featured: #f5f3ff;
+}
+.dark {
+  --c-canvas: #121214;
+  --c-surface: #1c1c1e;
+  --c-ink: #f4f4f6;
+  --c-ink-soft: #b4b7c3;
+  --c-ink-muted: #8e91a0;
+  --c-hairline: #33343c;
+  --c-hairline-soft: #2a2b32;
+  --c-hairline-strong: #4a4c58;
+  --c-btn: #ffffff;
+  --c-btn-text: #1c1c1e;
+  --c-active: #ffffff;
+  --c-active-text: #1c1c1e;
+  --c-featured: #1f1d33;
+}
+
+@theme inline {
+  --font-sans: "DM Sans", "Roobert PRO", "Noto Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --color-canvas: var(--c-canvas);
+  --color-surface: var(--c-surface);
+  --color-ink: var(--c-ink);
+  --color-ink-soft: var(--c-ink-soft);
+  --color-ink-muted: var(--c-ink-muted);
+  --color-hairline: var(--c-hairline);
+  --color-hairline-soft: var(--c-hairline-soft);
+  --color-hairline-strong: var(--c-hairline-strong);
+  --color-btn: var(--c-btn);
+  --color-btn-text: var(--c-btn-text);
+  --color-active: var(--c-active);
+  --color-active-text: var(--c-active-text);
+  --color-featured: var(--c-featured);
+}
+
+/* Fixed brand colours (same in light and dark) */
+@theme {
+  --color-brand-yellow: #ffd02f;
+  --color-yellow-deep: #fcb900;
+  --color-yellow-soft: #fff4c4;
+  --color-yellow-dark: #746019;
+  --color-brand-blue: #4262ff;
+  --color-coral-light: #ffc6c6;
+  --color-coral-dark: #600000;
+  --color-rose-light: #fde0f0;
+  --color-teal-light: #c3faf5;
+  --color-moss-dark: #187574;
+  --color-orange-light: #ffe6cd;
+  --color-success: #00b473;
+  --color-pastel-ink: #1c1c1e;
+
+  --radius-card: 28px;
+  --radius-feature: 32px;
+  --shadow-card: 0 4px 12px 0 rgba(5, 0, 56, 0.06);
+  --shadow-mockup: 0 12px 32px -4px rgba(5, 0, 56, 0.1);
+  --shadow-modal: 0 16px 48px -8px rgba(5, 0, 56, 0.22);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+body {
+  background: var(--c-canvas);
+  color: var(--c-ink);
+  font-family: var(--font-sans);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* ── Reusable components ───────────────────────────────────── */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium cursor-pointer select-none;
+    transition: transform 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+  }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { @apply bg-btn text-btn-text; }
+  .btn-primary:hover { opacity: 0.88; }
+  .btn-secondary { @apply border border-hairline-strong text-ink bg-transparent; }
+  .btn-secondary:hover { @apply bg-surface; }
+  .btn-yellow { @apply bg-brand-yellow text-pastel-ink; }
+  .btn-icon {
+    @apply inline-flex size-10 items-center justify-center rounded-full border border-hairline bg-canvas text-ink cursor-pointer;
+    transition: transform 0.18s ease, background-color 0.18s ease;
+  }
+  .btn-icon:hover { @apply bg-surface; transform: scale(1.06); }
+  .btn-icon:active { transform: scale(0.94); }
+  .btn-icon:disabled { opacity: 0.35; pointer-events: none; }
+
+  .pill {
+    @apply inline-flex items-center rounded-full border border-hairline bg-canvas px-4 py-2 text-sm font-medium text-ink-soft cursor-pointer select-none;
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  }
+  .pill:hover { @apply border-hairline-strong text-ink; }
+  .pill:active { transform: scale(0.96); }
+  .pill[aria-selected="true"], .pill[aria-pressed="true"], .pill.is-active {
+    @apply bg-active text-active-text border-active;
+  }
+
+  /* Top navigation links: the current page is greyed out but stays visible */
+  .nav-link {
+    @apply inline-flex items-center rounded-full border border-transparent px-4 py-2 text-sm font-medium text-ink cursor-pointer select-none;
+    transition: background-color 0.18s ease, color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+  }
+  .nav-link:hover { @apply bg-surface; }
+  .nav-link:active { transform: scale(0.96); }
+  .nav-link.is-active { @apply border-hairline bg-surface text-ink-muted; }
+
+  .chip { @apply inline-flex items-center rounded-full px-2.5 py-1 text-[13px] font-semibold; }
+  .chip-yellow { @apply bg-yellow-soft text-yellow-dark; }
+  .chip-blue { @apply bg-featured text-brand-blue; }
+
+  .card { @apply rounded-card p-8 text-pastel-ink; box-shadow: var(--shadow-card); }
+  .card-plain { @apply rounded-2xl border border-hairline-soft bg-canvas p-6; }
+
+  .field {
+    @apply h-11 w-full rounded-lg border border-hairline-strong bg-canvas px-4 text-base text-ink outline-none;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  .field:focus { @apply border-brand-blue; box-shadow: 0 0 0 1px var(--color-brand-blue); }
+  textarea.field { @apply h-auto py-3; }
+
+  .eyebrow { @apply text-[11px] font-semibold uppercase tracking-[0.5px] text-ink-muted; }
+}
+
+/* ── Motion ────────────────────────────────────────────────── */
+@keyframes page-in-next { from { opacity: 0; transform: translateX(56px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes page-in-prev { from { opacity: 0; transform: translateX(-56px) scale(0.985); } to { opacity: 1; transform: none; } }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: none; } }
+@keyframes toast-in { from { opacity: 0; transform: translate(-50%, 16px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+.page-enter-next { animation: page-in-next 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.page-enter-prev { animation: page-in-prev 0.55s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.reveal { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: calc(var(--i, 0) * 70ms + 120ms); }
+
+.tile { transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.35s ease; }
+.tile:hover { transform: translateY(-6px) rotate(-0.4deg); box-shadow: var(--shadow-mockup); }
+.tile img { transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.tile:hover img { transform: scale(1.05); }
+
+.is-filtered-out { display: none !important; }
+.filter-in { animation: pop 0.4s ease both; }
+
+dialog::backdrop { background: rgba(5, 0, 56, 0.6); backdrop-filter: blur(4px); }
+dialog[open] { animation: pop 0.25s ease both; }
+
+details > summary { list-style: none; }
+details > summary::-webkit-details-marker { display: none; }
+details[open] .chev { transform: rotate(180deg); }
+.chev { transition: transform 0.25s ease; }
+
+.drawer { transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.drawer.is-open { transform: none; }
+.scrim { opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
+.scrim.is-open { opacity: 1; pointer-events: auto; }
+
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Toggle switch */
+.switch { @apply relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full bg-hairline-strong; transition: background-color 0.2s ease; }
+.switch::after { content: ""; @apply absolute left-1 size-5 rounded-full bg-white; transition: transform 0.2s ease; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.switch[aria-checked="true"] { @apply bg-brand-blue; }
+.switch[aria-checked="true"]::after { transform: translateX(20px); }
+
+/* Slider */
+input[type="range"] { @apply h-1.5 w-full cursor-pointer appearance-none rounded-full bg-hairline-strong; }
+input[type="range"]::-webkit-slider-thumb { @apply size-5 appearance-none rounded-full bg-btn; border: 3px solid var(--c-canvas); box-shadow: 0 0 0 1px var(--c-hairline-strong); }
+input[type="range"]::-moz-range-thumb { @apply size-5 rounded-full bg-btn; border: 3px solid var(--c-canvas); }
+
+:focus-visible { outline: 2px solid var(--color-brand-blue); outline-offset: 2px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

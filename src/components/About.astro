@@ -1,0 +1,162 @@
+---
+import Icon from './Icon.astro';
+import {
+  aboutHeadline, story, status, stats, journey, experience, campusProjects,
+  education, tools, craft, beyondDesign,
+} from '../data/site';
+
+const tabs = [
+  { id: 'experience', label: 'Experience', icon: 'briefcase' },
+  { id: 'background', label: 'Education & Skills', icon: 'cap' },
+  { id: 'campus', label: 'Campus Projects', icon: 'palette' },
+];
+const badge = 'grid shrink-0 place-items-center rounded-full bg-white/60';
+---
+<section data-page="about" class="mx-auto max-w-[1280px] px-5 py-12 sm:px-8 lg:py-16">
+  <p class="eyebrow reveal" style="--i:0">About me</p>
+  <h2 class="reveal mt-3 max-w-4xl text-4xl font-medium leading-[1.12] tracking-[-0.02em] sm:text-6xl" style="--i:1">
+    {aboutHeadline}
+  </h2>
+
+  {/* Story */}
+  <div class="mt-10 grid items-start gap-6 lg:grid-cols-[1.5fr_1fr]">
+    <div class="reveal space-y-4 text-lg leading-relaxed text-ink-soft" style="--i:2">
+      {story.map((para) => <p>{para}</p>)}
+    </div>
+    <aside class="card reveal bg-brand-yellow/90" style="--i:3">
+      <span class="chip inline-flex items-center gap-1.5 bg-white/60"><Icon name="spark" size={14} />{status.label}</span>
+      <p class="mt-4 leading-relaxed">{status.text}</p>
+    </aside>
+  </div>
+
+  {/* Numbers (count up when the page opens) */}
+  <div class="mt-10 grid items-start gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    {stats.map((s, i) => (
+      <article class={`card tile reveal !p-6 ${s.tint}`} style={`--i:${i + 4}`}>
+        <span class={`${badge} mb-4 size-10`}><Icon name={s.icon} size={20} /></span>
+        <p class="text-5xl font-medium leading-none tracking-[-0.04em]" data-count={s.count} data-suffix={s.suffix}>{s.count}{s.suffix}</p>
+        <p class="mt-3 text-sm leading-relaxed opacity-80">{s.label}</p>
+      </article>
+    ))}
+  </div>
+
+  {/* The story so far */}
+  <div class="mt-16">
+    <p class="eyebrow" data-inview>The story so far</p>
+    <h3 class="mt-3 max-w-2xl text-3xl font-medium leading-tight tracking-[-0.02em] sm:text-4xl" data-inview style="--i:1">From the classroom to the creative team.</h3>
+    <ol class="relative mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+      <div aria-hidden="true" class="absolute left-5 right-5 top-5 hidden border-t-2 border-dashed border-hairline-strong lg:block"></div>
+      {journey.map((j, i) => (
+        <li data-inview style={`--i:${i + 2}`} class="relative">
+          <div class="relative z-10 grid size-10 place-items-center rounded-full border-2 border-current bg-canvas text-sm font-semibold">{String(i + 1).padStart(2, '0')}</div>
+          <div data-tilt class={`card tile tilt mt-4 !p-5 ${j.tint}`}>
+            <p class="text-xs font-medium uppercase tracking-wide opacity-65">{j.when}</p>
+            <h4 class="mt-2 text-lg font-medium leading-snug">{j.title}</h4>
+            <p class="mt-2 text-sm leading-relaxed opacity-80">{j.text}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+  </div>
+
+  {/* Tabs */}
+  <div role="tablist" aria-label="My background" class="reveal mt-14 flex flex-wrap gap-2" style="--i:8">
+    {tabs.map((t, i) => (
+      <button role="tab" class="pill inline-flex items-center gap-2" id={`tab-${t.id}`} data-tab-group="about" data-tab={t.id} aria-controls={`panel-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'}>
+        <Icon name={t.icon} size={15} />{t.label}
+      </button>
+    ))}
+  </div>
+
+  <div role="tabpanel" id="panel-experience" aria-labelledby="tab-experience" data-tab-panel="about" data-panel="experience" class="mt-5 grid items-start gap-5 lg:grid-cols-2">
+    {experience.map((e) => (
+      <article class={`card tile ${e.tint}`}>
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-2xl font-medium leading-snug tracking-[-0.01em]">{e.role}</h3>
+            <p class="mt-1 font-medium">{e.company}</p>
+            <p class="mt-0.5 flex items-center gap-1.5 text-sm opacity-65"><Icon name="calendar" size={14} />{e.dates}</p>
+          </div>
+          <span class={`${badge} size-11`}><Icon name="briefcase" size={20} /></span>
+        </div>
+        <ul class="mt-5 space-y-3">
+          {e.highlights.map((h) => (
+            <li class="flex gap-3 text-[15px] leading-relaxed">
+              <span class="mt-2 size-1.5 shrink-0 rounded-full bg-current opacity-50"></span>
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+      </article>
+    ))}
+  </div>
+
+  <div role="tabpanel" id="panel-background" aria-labelledby="tab-background" data-tab-panel="about" data-panel="background" class="is-filtered-out mt-5 grid gap-5 lg:grid-cols-2 lg:items-stretch">
+    {/* Left: tools & skills only */}
+    <article class="card tile bg-rose-light">
+      <div class="flex items-center justify-between gap-3">
+        <p class="eyebrow !text-coral-dark">Tools & Skills</p>
+        <span class={`${badge} size-10`}><Icon name="pen" size={18} /></span>
+      </div>
+      <div class="mt-4 flex flex-wrap gap-2">
+        {tools.map((t) => (
+          <span class="chip inline-flex items-center gap-2 bg-white/70 !pl-1.5">
+            <span class="grid size-5 place-items-center rounded-md text-[10px] font-bold leading-none" style={`background:${t.bg};color:${t.fg}`}>{t.abbr}</span>
+            {t.name}
+          </span>
+        ))}
+      </div>
+      <div class="mt-3 flex flex-wrap gap-2">
+        {craft.map((c) => (
+          <span class="chip inline-flex items-center gap-1.5 bg-white/40 !font-medium"><Icon name={c.icon} size={14} />{c.name}</span>
+        ))}
+      </div>
+    </article>
+
+    {/* Right: education */}
+    <article class="card tile bg-teal-light">
+      <div class="flex items-center justify-between gap-3">
+        <p class="eyebrow !text-moss-dark">Education</p>
+        <span class={`${badge} size-10`}><Icon name="cap" size={20} /></span>
+      </div>
+      <h3 class="mt-3 text-xl font-medium leading-snug">{education.school}</h3>
+      <p class="mt-2 text-[15px] font-medium leading-snug">{education.degree}</p>
+      <p class="text-[15px] leading-snug">{education.major}</p>
+      <p class="mt-2 flex items-center gap-1.5 text-sm opacity-65"><Icon name="pin" size={14} />{education.detail}</p>
+    </article>
+
+    {/* Full-width row: spans exactly Tools & Skills + Education. Compact on desktop (heading + chips on the
+        left, the two paragraphs side by side on the right); stacks neatly on tablets and phones. */}
+    <article class="card tile w-full bg-orange-light lg:col-span-2 lg:grid lg:grid-cols-[minmax(0,17rem)_minmax(0,1fr)] lg:items-center lg:gap-x-10">
+      <div>
+        <div class="flex items-center gap-3">
+          <span class={`${badge} size-10`}><Icon name="spark" size={18} /></span>
+          <p class="eyebrow !text-yellow-dark">Beyond Design</p>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2">
+          {beyondDesign.items.map((i) => (
+            <span class="chip inline-flex items-center gap-1.5 bg-white/60"><Icon name={i.icon} size={14} />{i.name}</span>
+          ))}
+        </div>
+      </div>
+      <div class="mt-5 grid gap-4 text-[15px] leading-relaxed md:grid-cols-2 md:gap-8 lg:mt-0">
+        {beyondDesign.story.map((para) => <p>{para}</p>)}
+      </div>
+    </article>
+  </div>
+
+  <div role="tabpanel" id="panel-campus" aria-labelledby="tab-campus" data-tab-panel="about" data-panel="campus" class="is-filtered-out mt-5 grid items-start gap-5 lg:grid-cols-2">
+    {campusProjects.map((p) => (
+      <article class={`card tile ${p.tint}`}>
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h3 class="text-xl font-medium leading-snug">{p.title}</h3>
+            <p class="mt-1 text-sm opacity-65">{p.meta}</p>
+          </div>
+          <span class={`${badge} size-10`}><Icon name="palette" size={18} /></span>
+        </div>
+        <p class="mt-4 text-[15px] leading-relaxed">{p.text}</p>
+      </article>
+    ))}
+  </div>
+</section>

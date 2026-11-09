@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Nav from '../components/Nav.astro';
+import Cover from '../components/Cover.astro';
+import About from '../components/About.astro';
+import IndexPage from '../components/IndexPage.astro';
+import Logofolio from '../components/Logofolio.astro';
+import Branding from '../components/Branding.astro';
+import PrintDesign from '../components/PrintDesign.astro';
+import Contact from '../components/Contact.astro';
+import Overlays from '../components/Overlays.astro';
+import AlbumControls from '../components/AlbumControls.astro';
+---
+<Base>
+  <Nav />
+  <main id="album">
+    <Cover />
+    <About />
+    <IndexPage />
+    <Logofolio />
+    <Branding />
+    <PrintDesign />
+    <Contact />
+  </main>
+  <AlbumControls />
+  <Overlays />
+  <script>
+    import '../scripts/album';
+  </script>
+</Base>

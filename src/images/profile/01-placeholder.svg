@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" width="800" height="1000">
+<rect width="800" height="1000" fill="#ffc6c6"/>
+<circle cx="680.0" cy="150.0" r="144.0" fill="#ffffff" opacity="0.55"/>
+<rect x="64.0" y="720.0" width="240.0" height="120.0" rx="60.0" fill="#ffffff" opacity="0.55"/>
+<g font-family="sans-serif" fill="#1c1c1e" text-anchor="middle">
+<text x="400.0" y="494.0" font-size="56.00000000000001" font-weight="600">Your photo 01</text>
+<text x="400.0" y="556.0" font-size="32.0" opacity="0.6">Placeholder — replace me</text>
+</g></svg>

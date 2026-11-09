@@ -1,0 +1,50 @@
+---
+import { brandingProjects } from '../data/site';
+---
+<section data-page="branding" class="mx-auto max-w-[1280px] px-5 py-12 sm:px-8 lg:py-16">
+  <nav aria-label="Breadcrumb" class="reveal mb-6 flex items-center gap-2 text-sm text-ink-muted" style="--i:0">
+    <button data-go="projects" class="cursor-pointer font-medium text-ink-soft underline-offset-4 hover:underline">Projects</button>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">Branding</span>
+  </nav>
+  <p class="eyebrow reveal" style="--i:0">02 · Branding</p>
+  <h2 class="reveal mt-3 text-5xl font-medium tracking-[-0.03em] sm:text-7xl" style="--i:1">Branding</h2>
+  <p class="reveal mt-3 max-w-2xl text-ink-soft" style="--i:2">Logo Design / Brand Identity / Visual Systems / Concept Development</p>
+
+  <div role="tablist" aria-label="Brand projects" class="reveal mt-8 flex flex-wrap gap-2" style="--i:3">
+    {brandingProjects.map((p, i) => (
+      <button role="tab" class="pill" id={`tab-${p.id}`} data-tab-group="branding" data-tab={p.id} aria-controls={`panel-${p.id}`} aria-selected={i === 0 ? 'true' : 'false'}>
+        {p.tab}
+      </button>
+    ))}
+  </div>
+
+  {brandingProjects.map((p, i) => (
+    <div role="tabpanel" id={`panel-${p.id}`} aria-labelledby={`tab-${p.id}`} data-tab-panel="branding" data-panel={p.id} class={`mt-6 grid gap-5 lg:grid-cols-[0.8fr_1.4fr] lg:items-start ${i === 0 ? '' : 'is-filtered-out'}`}>
+      <article class={`card ${p.tint} lg:sticky lg:top-24`}>
+        <h3 class="text-3xl font-medium tracking-[-0.02em]">{p.title}</h3>
+        <p class="mt-1 text-base font-medium opacity-70">{p.subtitle}</p>
+        <dl class="mt-5 flex flex-wrap gap-2">
+          {p.meta.map(([k, v]) => (
+            <div class="rounded-full bg-white/60 px-3 py-1.5 text-[13px]"><dt class="inline font-semibold">{k}:</dt> <dd class="inline">{v}</dd></div>
+          ))}
+        </dl>
+        <div class="mt-6 space-y-4 leading-relaxed">
+          {p.description.map((para) => <p>{para}</p>)}
+        </div>
+      </article>
+
+      <div class="grid grid-cols-2 gap-4">
+        {p.images.map((src, n) => (
+          <button
+            class={`tile cursor-pointer overflow-hidden rounded-2xl border border-hairline-soft bg-surface ${n === 0 && p.images.length % 2 === 1 ? 'col-span-2' : ''}`}
+            data-lightbox={`b-${p.id}`} data-src={src} data-caption={`${p.title} — ${n + 1}`}
+            aria-label={`Open ${p.title} image ${n + 1}`}
+          >
+            <img src={src} alt={`${p.title} — ${n + 1}`} class="aspect-[4/3] w-full object-cover" loading="lazy" />
+          </button>
+        ))}
+      </div>
+    </div>
+  ))}
+</section>

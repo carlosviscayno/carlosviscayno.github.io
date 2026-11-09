@@ -1,0 +1,151 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+
+const title = [...'Portfolio'];
+const words = ['Logos', 'Brand identity', 'Print design', 'Layout', 'Typography', 'Silk-screen', 'Pre-press', 'Vector art'];
+const badgeText = `${site.role.toUpperCase()} • ${site.location.split(',')[0].toUpperCase()} • `;
+---
+<section data-page="home" data-parallax-root class="relative isolate mx-auto grid min-h-[calc(100dvh-8rem)] max-w-[1280px] items-center gap-10 px-5 py-10 sm:px-8 lg:grid-cols-[1.15fr_1fr] lg:grid-rows-[1fr_auto] lg:py-16">
+  {/* Soft colour blobs that drift with the mouse */}
+  <div aria-hidden="true" data-depth="40" class="pointer-events-none absolute left-0 top-[6%] -z-10 size-72 rounded-full bg-rose-light opacity-70 blur-3xl"></div>
+  <div aria-hidden="true" data-depth="-60" class="pointer-events-none absolute bottom-[18%] right-0 -z-10 size-80 rounded-full bg-teal-light opacity-70 blur-3xl"></div>
+  <div aria-hidden="true" data-depth="30" class="pointer-events-none absolute left-[38%] top-[55%] -z-10 size-56 rounded-full bg-yellow-soft opacity-60 blur-3xl"></div>
+
+  <div>
+    <span class="chip chip-yellow reveal" style="--i:0">{site.tagline}</span>
+    <h1 class="reveal mt-6 text-[clamp(3.5rem,11vw,7.5rem)] font-medium leading-[1.02] tracking-[-0.035em]" style="--i:1" aria-label="Portfolio">
+      {title.map((ch, i) => <span class="hero-letter" style={`--d:${i}`} aria-hidden="true">{ch}</span>)}
+    </h1>
+    <p class="reveal mt-4 text-xl font-medium sm:text-2xl" style="--i:2">{site.name}</p>
+    <p class="reveal mt-3 text-lg sm:text-xl" style="--i:3">
+      I design
+      <span class="rotator" data-rotate data-words="logos|brand identities|posters|menus|merchandise|event branding">logos</span>
+      with the finished piece in mind.
+    </p>
+    <p class="reveal mt-4 max-w-xl text-lg leading-relaxed text-ink-soft" style="--i:4">{site.intro}</p>
+    <div class="reveal mt-9 flex flex-wrap gap-3" style="--i:5">
+      <button class="btn btn-primary" data-go="projects" data-heart>
+        View projects
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </button>
+      <button class="btn btn-secondary inline-flex items-center gap-2" data-go="contact"><Icon name="mail" size={16} />Get in touch</button>
+    </div>
+  </div>
+
+  <div class="reveal mx-auto w-full max-w-md pb-2" style="--i:3">
+    {/* Photo stage: stickers, badge, photo and location chip all hang off this box,
+        so nothing here can ever land on top of the caption below it */}
+    <div class="relative">
+      {/* Draggable stickers (shown on phones too: touch-drag works the same as the mouse) */}
+      <span data-drag class="sticker bg-rose-light text-pastel-ink -left-2 top-10 sm:-left-6" style="--r:-8deg;--fd:0s">Logos</span>
+      <span data-drag class="sticker bg-teal-light text-pastel-ink -right-2 top-[46%] sm:-right-5" style="--r:6deg;--fd:-1.5s">Brand</span>
+      <span data-drag class="sticker bg-yellow-soft text-pastel-ink -left-2 bottom-24 sm:-left-8" style="--r:5deg;--fd:-3s">Print</span>
+      <span data-drag class="sticker bg-orange-light text-pastel-ink -right-2 bottom-8 sm:-right-7" style="--r:-6deg;--fd:-4.5s">Type</span>
+
+      {/* Spinning badge */}
+      <div class="badge bg-brand-yellow text-pastel-ink shadow-card" aria-hidden="true">
+        <svg class="badge-spin" viewBox="0 0 120 120">
+          <defs><path id="badge-circle" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs>
+          <text font-size="10" font-weight="600" fill="currentColor"><textPath href="#badge-circle" textLength="283" lengthAdjust="spacing">{badgeText}</textPath></text>
+        </svg>
+        <span class="relative text-lg font-semibold sm:text-xl">{site.monogram}</span>
+      </div>
+
+      {/* data-profile: the mascot reacts when the cursor hovers it (or when it is tapped on touch screens) */}
+      <div data-tilt data-profile class="tilt relative overflow-hidden rounded-card border border-hairline-soft bg-canvas shadow-mockup">
+        <img src={site.profilePhoto} alt={`Photo of ${site.name}`} class="aspect-[4/5] w-full object-cover" />
+      </div>
+
+      {/* Location chip straddles the photo's bottom edge, on the left, clear of the caption */}
+      <span class="chip chip-yellow absolute -bottom-4 left-5 z-10 inline-flex items-center gap-1.5 shadow-card"><Icon name="pin" size={14} />{site.location}</span>
+    </div>
+
+    <p class="mt-10 text-center text-xs opacity-60">Go on, drag the stickers around ✦</p>
+  </div>
+
+  {/* Scrolling ticker */}
+  <div class="marquee self-end lg:col-span-2" aria-hidden="true">
+    <div class="marquee-track">
+      {[0, 1].map(() => (
+        <ul class="marquee-group">
+          {words.map((w) => <li>{w}<span>✦</span></li>)}
+        </ul>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style is:global>
+  ::selection { background: #ffd84d; color: #1b1b1b; }
+
+  /* ── Big title: letters pop in, and jump + change colour on hover ── */
+  .hero-letter {
+    display: inline-block; cursor: default;
+    transition: translate .25s cubic-bezier(.3,1.6,.5,1), rotate .25s, color .2s;
+  }
+  .hero-letter:hover { translate: 0 -.07em; rotate: -7deg; }
+  .hero-letter:nth-child(4n+1):hover { color: #ff6b8b; }
+  .hero-letter:nth-child(4n+2):hover { color: #17b8a6; }
+  .hero-letter:nth-child(4n+3):hover { color: #f5a623; }
+  .hero-letter:nth-child(4n):hover   { color: #4f6bff; }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-letter { animation: letter-in .8s cubic-bezier(.2,.9,.3,1.25) backwards; animation-delay: calc(var(--d) * 55ms + 200ms); }
+  }
+  @keyframes letter-in { from { opacity: 0; transform: translateY(.55em) rotate(10deg); } }
+
+  /* ── Rotating word ── */
+  .rotator {
+    display: inline-block; padding: 0 .3em; border-radius: .4em; font-weight: 600;
+    background: linear-gradient(transparent 55%, rgba(255,216,77,.4) 55%);
+  }
+  .rot-in { animation: rot-in .45s cubic-bezier(.2,.9,.3,1.2); }
+  @keyframes rot-in { from { opacity: 0; transform: translateY(.5em); } }
+
+  /* ── Stickers + badge ── */
+  .sticker {
+    position: absolute; z-index: 10; display: block; padding: .4rem .85rem; border-radius: 999px;
+    font-weight: 600; font-size: .85rem; box-shadow: 0 10px 24px -10px rgba(0,0,0,.3);
+    cursor: grab; touch-action: none; user-select: none; rotate: var(--r, 0deg);
+    animation: float 6s ease-in-out infinite; animation-delay: var(--fd, 0s);
+  }
+  @media (min-width: 640px) { .sticker { padding: .55rem 1.05rem; font-size: .95rem; } }
+  .sticker.is-dragging { cursor: grabbing; scale: 1.12; z-index: 30; animation-play-state: paused; box-shadow: 0 18px 30px -12px rgba(0,0,0,.35); }
+  @keyframes float { 50% { transform: translateY(-8px); } }
+
+  .badge { position: absolute; z-index: 10; top: -1.5rem; right: -.5rem; display: grid; width: 5.75rem; height: 5.75rem; place-items: center; border-radius: 999px; }
+  @media (min-width: 640px) { .badge { top: -2rem; right: -1.25rem; width: 7.5rem; height: 7.5rem; } }
+  .badge-spin { position: absolute; inset: 0; width: 100%; height: 100%; animation: spin 18s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Ticker ── */
+  .marquee {
+    overflow: hidden; padding: .9rem 0;
+    border-block: 1px solid rgba(128,128,128,.25);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+            mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track { display: flex; width: max-content; animation: marquee 32s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-group { display: flex; gap: 2rem; padding-right: 2rem; font-size: clamp(1.5rem, 3vw, 2.25rem); font-weight: 500; letter-spacing: -.02em; white-space: nowrap; }
+  .marquee-group li { display: flex; align-items: center; gap: 2rem; }
+  .marquee-group li:nth-child(even) { color: transparent; -webkit-text-stroke: 1px currentColor; }
+  .marquee-group li span { font-size: .9rem; color: #f5a623; -webkit-text-stroke: 0; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* ── Tilt cards + scroll-in ── */
+  .tilt { transition: transform .25s ease-out; will-change: transform; }
+  [data-inview] { opacity: 0; translate: 0 26px; transition: opacity .7s ease, translate .7s cubic-bezier(.2,.8,.2,1); transition-delay: calc(var(--i, 0) * 90ms); }
+  [data-inview].in-view { opacity: 1; translate: none; }
+
+  /* ── Pointing-hand cursor (exact, no trailing ring) + progress bar (added by album.ts) ── */
+  html, html *, html *::before, html *::after { cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'><path d='M13 2.5c-1.5 0-2.7 1.2-2.7 2.7v11.3l-1.600-1.600c-1-1-2.700-1-3.700.1-1 1-.9 2.600.1 3.600l6.600 6.700c1.700 1.800 3.700 2.700 6.200 2.700h2.100c3.300 0 6-2.700 6-6v-6.800c0-1.200-1-2.200-2.200-2.200-.5 0-.9.1-1.200.4-.3-.9-1.100-1.500-2.100-1.500-.7 0-1.300.3-1.700.8-.4-.9-1.200-1.400-2.100-1.400-.4 0-.7.1-1 .2V5.200C15.700 3.700 14.500 2.500 13 2.500z' fill='white' stroke='%231b1b1b' stroke-width='1.6' stroke-linejoin='round'/><path d='M19.200 15v5M23 16v4' stroke='%231b1b1b' stroke-width='1.200' stroke-linecap='round'/></svg>") 13 3, pointer !important; }
+  html input:not([type=checkbox]):not([type=radio]):not([type=range]), html textarea { cursor: text !important; }
+  .fx-progress { position: fixed; left: 0; top: 0; z-index: 60; width: 100%; height: 3px; transform: scaleX(0); transform-origin: 0 50%; background: linear-gradient(90deg, #ff8fb1, #ffd84d, #3ecfc0, #6d7dff); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sticker, .badge-spin, .marquee-track { animation: none; }
+    .marquee { overflow-x: auto; }
+    [data-inview] { opacity: 1; translate: none; transition: none; }
+  }
+</style>

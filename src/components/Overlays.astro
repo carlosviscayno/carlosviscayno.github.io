@@ -1,0 +1,30 @@
+---
+---
+<!-- Lightbox (modal) -->
+<dialog id="lightbox" class="m-auto max-h-[92dvh] w-[min(96vw,1100px)] overflow-hidden rounded-card bg-canvas p-0 text-ink shadow-modal">
+  <div class="flex items-center justify-between gap-4 px-5 py-3">
+    <p id="lightbox-caption" class="truncate text-sm font-medium"></p>
+    <div class="flex items-center gap-2">
+      <span id="lightbox-count" class="text-sm text-ink-muted"></span>
+      <button class="btn-icon" id="lightbox-close" aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+    </div>
+  </div>
+  <div class="relative flex items-center justify-center bg-surface">
+    <img id="lightbox-img" src="" alt="" class="max-h-[76dvh] w-full object-contain" />
+    <button class="btn-icon absolute left-3" id="lightbox-prev" aria-label="Previous"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 6-6 6 6 6"/></svg></button>
+    <button class="btn-icon absolute right-3" id="lightbox-next" aria-label="Next"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 6 6 6-6 6"/></svg></button>
+  </div>
+</dialog>
+
+<!-- Project drawer -->
+<div id="scrim" class="scrim fixed inset-0 z-40 bg-[rgba(5,0,56,0.5)]" aria-hidden="true"></div>
+<aside id="drawer" class="drawer fixed inset-y-0 right-0 z-50 flex w-[min(100vw,560px)] flex-col bg-canvas shadow-modal" aria-hidden="true" aria-label="Project details" tabindex="-1">
+  <div class="flex items-center justify-between border-b border-hairline-soft px-6 py-4">
+    <p class="eyebrow">Project</p>
+    <button class="btn-icon" id="drawer-close" aria-label="Close project"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div id="drawer-body" class="flex-1 overflow-y-auto px-6 py-6"></div>
+</aside>
+
+<!-- Toast -->
+<div id="toast" class="is-filtered-out fixed bottom-24 left-1/2 z-[60] -translate-x-1/2 rounded-full bg-btn px-5 py-3 text-sm font-medium text-btn-text shadow-modal" role="status" style="animation: toast-in .3s ease both"></div>
